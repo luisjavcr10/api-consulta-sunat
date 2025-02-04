@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer-core');
 
 // Configuración de Browserless
-const BROWSERLESS_ENDPOINT = 'RiIRSKoUJTKzUM7b3e324561b2845e1aa539058c89'; // Reemplaza TU_API_KEY con tu token
+const BROWSERLESS_ENDPOINT = 'wss://chrome.browserless.io?token=RiIRSKoUJTKzUM7b3e324561b2845e1aa539058c89'; // Reemplaza TU_API_KEY con tu token
 
 // Inicializa el navegador y la página
 async function initializeBrowser() {

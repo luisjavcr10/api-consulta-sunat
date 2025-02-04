@@ -10,6 +10,9 @@ const port = process.env.PORT || 3000;
 app.use(corsConfig);
 
 routerApi(app);
+app.get('/api/v1', (req, res) => {
+    res.send('Hola Mundo');
+});
 
 app.use(ErrorHandler.logErrors);
 app.use(ErrorHandler.boomErrorHandler);

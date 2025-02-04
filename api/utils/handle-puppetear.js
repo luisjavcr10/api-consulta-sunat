@@ -1,6 +1,6 @@
 const chromium = require('chrome-aws-lambda');
 const puppeteerCore = require('puppeteer-core');
-const puppeteer = require('puppeteer');
+//const puppeteer = require('puppeteer');
 
 // Inicializa el navegador y la página
 async function initializeBrowser() {
@@ -8,7 +8,7 @@ async function initializeBrowser() {
 
     let browser;
     try {
-        if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+        //if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
             // Si está en AWS Lambda o Vercel, usar chrome-aws-lambda
             browser = await puppeteerCore.launch({
                 executablePath: await chromium.executablePath || '/usr/bin/chromium-browser',
@@ -23,19 +23,19 @@ async function initializeBrowser() {
                 defaultViewport: chromium.defaultViewport,
                 headless: chromium.headless,
             });
-        } else {
-            // Si está en local, usar Puppeteer normal
-            browser = await puppeteer.launch({
-                headless: true,
-                args: [
-                    '--no-sandbox',
-                    '--disable-setuid-sandbox',
-                    '--disable-dev-shm-usage',
-                    '--disable-accelerated-2d-canvas',
-                    '--disable-gpu',
-                ],
-            });
-        }
+        //} else {
+        //    // Si está en local, usar Puppeteer normal
+        //    browser = await puppeteer.launch({
+        //        headless: true,
+        //        args: [
+        //            '--no-sandbox',
+        //            '--disable-setuid-sandbox',
+        //            '--disable-dev-shm-usage',
+        //            '--disable-accelerated-2d-canvas',
+        //            '--disable-gpu',
+        //        ],
+        //    });
+        //}
 
         const page = await browser.newPage();
         await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');

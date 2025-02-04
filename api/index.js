@@ -12,7 +12,6 @@ app.use(corsConfig);
 routerApi(app);
 
 app.use(ErrorHandler.logErrors);
-app.use(ErrorHandler.boomErrorHandler);
 app.use(ErrorHandler.errorHandler);
 
 app.listen(port, () => {

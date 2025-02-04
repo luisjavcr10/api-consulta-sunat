@@ -6,29 +6,55 @@ const puppeteer = require('puppeteer-core');
 async function initializeBrowser() {
     let browser;
     try {
-      browser = await puppeteer.launch({
-        executablePath: await chromium.executablePath || "/usr/bin/chromium-browser", // Fallback para entornos locales
-        args: [
-          ...chromium.args,
-          "--no-sandbox",
-          "--disable-setuid-sandbox",
-          "--disable-dev-shm-usage",
-          "--single-process", // Necesario para Vercel
-          "--no-zygote",
-        ],
-        defaultViewport: chromium.defaultViewport,
-        headless: chromium.headless,
-      });
-  
-      const page = await browser.newPage();
-      await page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36");
-  
-      return { browser, page };
+        // 1. Configuración específica para Vercel
+        const executablePath = await chromium.executablePath;
+        
+        // 2. Argumentos críticos para serverless
+        const args = [
+            ...chromium.args,
+            "--no-sandbox",
+            "--disable-setuid-sandbox",
+            "--single-process",        // Reduce consumo de memoria
+            "--no-zygote",             // Necesario para entornos efímeros
+            "--disable-dev-shm-usage", // Evita usar /dev/shm
+            "--disable-gpu",           // Mejor compatibilidad
+            "--hide-scrollbars",       // Optimización visual
+            "--enable-logging",        // Debugging
+            "--v=1"                    // Nivel de verbosidad
+        ];
+
+        // 3. Lanzar el navegador con configuración optimizada
+        browser = await puppeteer.launch({
+            executablePath,
+            args,
+            headless: true, // Forzar headless (mejor rendimiento)
+            ignoreHTTPSErrors: true,
+            defaultViewport: {
+                width: 1920,
+                height: 1080,
+                deviceScaleFactor: 1
+            }
+        });
+
+        // 4. Configuración avanzada de la página
+        const page = await browser.newPage();
+        await page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36");
+        await page.setJavaScriptEnabled(true);
+        await page.setDefaultNavigationTimeout(30000); // 30 segundos
+
+        return { browser, page };
+
     } catch (error) {
-      console.error("Error al lanzar Puppeteer:", error);
-      throw new Error("No se pudo iniciar el navegador Puppeteer.");
+        // 5. Mejor manejo de errores
+        console.error("[PUPPETEER ERROR] Detalles completos:", {
+            message: error.message,
+            stack: error.stack,
+            chromiumPath: await chromium.executablePath
+        });
+        
+        throw new Error(`Fallo crítico al iniciar navegador: ${error.message}`);
     }
-  }
+}
 
 
 // Navega a la URL con reintentos

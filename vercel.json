@@ -2,18 +2,22 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/index.js", 
+      "src": "api/index.js",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": ["node_modules/chrome-aws-lambda/**/*"],
-        "runtime": "nodejs14.x"
+        "includeFiles": [
+          "node_modules/chrome-aws-lambda/**",
+          "node_modules/puppeteer-core/**"
+        ],
+        "runtime": "nodejs18.x",
+        "maxLambdaSize": "50mb"
       }
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/api/index.js" 
+      "dest": "/api/index.js"
     }
   ]
 }

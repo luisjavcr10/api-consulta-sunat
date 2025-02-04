@@ -1,0 +1,3 @@
+node_modules/**/*.md
+node_modules/**/*.ts
+node_modules/**/test

@@ -11,7 +11,7 @@ async function initializeBrowser() {
         if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
             // Si está en AWS Lambda o Vercel, usar chrome-aws-lambda
             browser = await puppeteerCore.launch({
-                executablePath: await chromium.executablePath || null,
+                executablePath: await chromium.executablePath || '/usr/bin/chromium-browser',
                 args: [
                     ...chromium.args,
                     '--no-sandbox',

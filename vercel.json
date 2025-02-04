@@ -2,18 +2,18 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/**/*.js",
+      "src": "api/index.js", 
       "use": "@vercel/node",
       "config": {
         "includeFiles": ["node_modules/chrome-aws-lambda/**/*"],
-        "runtime": "nodejs14.x" 
+        "runtime": "nodejs14.x"
       }
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/api/index.js"
+      "dest": "/api/index.js" 
     }
   ]
 }

@@ -1,5 +1,5 @@
 const chromium = require('chrome-aws-lambda');
-const puppeteerCore = require('puppeteer-core');
+const puppeteer = require('puppeteer-core');
 //const puppeteer = require('puppeteer');
 
 // Inicializa el navegador y la página

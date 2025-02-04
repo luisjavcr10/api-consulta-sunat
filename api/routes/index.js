@@ -10,8 +10,8 @@ function routerApi(app) {
     app.use('/api/v1', router);
     router.use('/ruc', rucRouter);
     router.use('/dni', dniRouter);
-    router.use('/api-docs',swaggerUi.serve);
-    router.get('/api-docs', swaggerUi.setup(swaggerDocument));
+    router.use('/documentation',swaggerUi.serve);
+    router.get('/documentation', swaggerUi.setup(swaggerDocument));
 }
 
 module.exports = routerApi;

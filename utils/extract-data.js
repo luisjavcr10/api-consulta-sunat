@@ -7,7 +7,7 @@ function extractAllData(information) {
 
     return {
         Ruc: getSafeValue(information[0], 1, '').slice(0, 11),
-        Nombres: getSafeValue(information[0], 1, '').slice(14),
+        RazonSocial: getSafeValue(information[0], 1, '').slice(14),
         TipoContribuyente: getSafeValue(information[1], 0),
         TipoDocumento: getSafeValue(information[1], 1),
         NombreComercial: getSafeValue(information[1], 2) === '-' ? null : getSafeValue(information[1], 2),
@@ -37,7 +37,7 @@ function extractBasicData(information) {
     }
     return{
         Ruc: getSafeValue(information.slice(0,11)),
-        Nombres:getSafeValue(information.slice(14)),
+        RazonSocial:getSafeValue(information.slice(14)),
     }
 }
 

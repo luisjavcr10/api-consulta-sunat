@@ -1,0 +1,335 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API para consulta de RUC/DNI en SUNAT",
+    "description": "Esta API permite consultar información asociada a números de DNI y RUC.",
+    "contact": {
+      "email": "ing.castillorabanal@gmail.com"
+    },
+    "externalDocs": {
+      "description": "Información extraída de SUNAT",
+      "url": "https://e-consultaruc.sunat.gob.pe/cl-ti-itmrconsruc/FrameCriterioBusquedaWeb.jsp"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "paths": {
+    "/api/v1/dni/{dni}": {
+      "get": {
+        "tags": [
+          "Consultar datos por DNI"
+        ],
+        "summary": "Obtener datos asociados a un DNI",
+        "description": "Retorna información detallada del titular asociado a un número de DNI.",
+        "parameters": [
+          {
+            "name": "dni",
+            "in": "path",
+            "description": "Número de DNI (8 dígitos)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9]{8}$"
+            },
+            "example": "12345678"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DniResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Número de DNI inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Número de DNI no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ruc/{ruc}/all": {
+      "get": {
+        "tags": [
+          "Consultar datos completos por RUC"
+        ],
+        "summary": "Obtener todos los datos asociados a un RUC",
+        "description": "Retorna la información completa registrada en SUNAT para el número de RUC indicado.",
+        "parameters": [
+          {
+            "name": "ruc",
+            "in": "path",
+            "description": "Número de RUC (11 dígitos)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9]{11}$"
+            },
+            "example": "12345678901"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RucAllResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Número de RUC inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Número de RUC no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ruc/{ruc}/basic": {
+      "get": {
+        "tags": [
+          "Consultar datos basicos por RUC"
+        ],
+        "summary": "Obtener datos básicos asociados a un RUC",
+        "description": "Retorna únicamente los datos básicos (por ejemplo, razón social y estado) para el RUC consultado.",
+        "parameters": [
+          {
+            "name": "ruc",
+            "in": "path",
+            "description": "Número de RUC (11 dígitos)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9]{11}$"
+            },
+            "example": "12345678901"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RucBasicResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Número de RUC inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Número de RUC no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DniResponse": {
+        "type": "object",
+        "properties": {
+          "Dni": {
+            "type": "string",
+            "description": "Número de DNI",
+            "example": "12345678"
+          },
+          "Nombres": {
+            "type": "string",
+            "description": "Nombre completo del titular",
+            "example": "JUAN PEREZ"
+          },
+          "Ubicacion": {
+            "type": "string",
+            "format": "date",
+            "description": "Ubicacion de registro de DNIr",
+            "example": "LIMA"
+          },
+          "Estado": {
+            "type": "boolean",
+            "description": "Estado del DNI",
+            "example": true
+          }
+        },
+        "required": [
+          "Dni",
+          "Nombres"
+        ]
+      },
+      "RucBasicResponse": {
+        "type": "object",
+        "properties": {
+          "Ruc": {
+            "type": "string",
+            "description": "Número de RUC",
+            "example": "12345678901"
+          },
+          "RazonSocial": {
+            "type": "string",
+            "description": "Razón social o nombre comercial",
+            "example": "Empresa Ejemplo S.A."
+          }
+        },
+        "required": [
+          "ruc",
+          "razonSocial"
+        ]
+      },
+      "RucAllResponse": {
+        "type": "object",
+        "properties": {
+          "Ruc": {
+            "type": "string",
+            "description": "Número de RUC",
+            "example": "12345678901"
+          },
+          "RazonSocial": {
+            "type": "string",
+            "description": "Razón social o nombre comercial",
+            "example": "Empresa Ejemplo S.A."
+          },
+          "TipoContribuyente": {
+            "type": "string"
+          },
+          "TipoDocumento": {
+            "type": "string"
+          },
+          "NombreComercial": {
+            "type": "string"
+          },
+          "FechaInscripcion": {
+            "type": "date"
+          },
+          "FechaInicioActividades": {
+            "type": "date"
+          },
+          "EstadoContribuyente": {
+            "type": "string"
+          },
+          "CondicionContribuyente": {
+            "type": "string"
+          },
+          "DomicilioFiscal": {
+            "type": "string"
+          },
+          "SistemaEmesionComprobante": {
+            "type": "string"
+          },
+          "ActividadComercialExterior": {
+            "type": "boolean"
+          },
+          "SistemaContabilidad": {
+            "type": "string"
+          },
+          "ActividadEconomica": {
+            "type": "string"
+          },
+          "ComprobantesPago": {
+            "type": "string"
+          },
+          "SistemaEmisionElectronica": {
+            "type": "string"
+          },
+          "FechaSistemaEmisionElectronica": {
+            "type": "date"
+          },
+          "FechaEmisorElectronico": {
+            "type": "date"
+          },
+          "ComprobantesElectronicos": {
+            "type": "string"
+          },
+          "FechaComprobantesElectronicos": {
+            "type": "date"
+          },
+          "FechaAliacionPLE": {
+            "type": "date"
+          },
+          "Padrones": {
+            "type": "string"
+          }
+          
+
+          
+          
+        },
+        "required": [
+          "ruc",
+          "razonSocial",
+          "estado"
+        ]
+      },
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "example": 400
+          },
+          "message": {
+            "type": "string",
+            "example": "Número de DNI/RUC inválido o no encontrado"
+          }
+        }
+      }
+    }
+  }
+}

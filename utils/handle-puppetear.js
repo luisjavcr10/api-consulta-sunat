@@ -18,7 +18,7 @@ async function initializeBrowser() {
 }
 
 // Navega a la URL con reintentos
-async function navigateWithRetries(page, url, retries = 3, timeout = 10000) {
+async function navigateWithRetries(page, url, retries = 5, timeout = 20000) {
     while (retries > 0) {
         try {
             await page.goto(url, { waitUntil: 'networkidle2', timeout });

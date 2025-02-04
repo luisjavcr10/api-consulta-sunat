@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const {getBasicDataRuc}= require('../services/dni-search-service');
+const { getBasicDataRuc } = require('../services/dni-search-service');
 const ValidatorHandler = require('../middlewares/validator-handler');
-const {getDni} = require('../schemas/get-schema');
+const { getDni } = require('../schemas/get-schema');
 
 router.get('/:dni', 
     ValidatorHandler.handle(getDni, 'params'),
@@ -16,4 +16,4 @@ router.get('/:dni',
         }
 });
 
-module.exports= router;
+module.exports = router;

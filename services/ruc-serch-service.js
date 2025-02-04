@@ -1,4 +1,4 @@
-const { initializeBrowser, navigateWithRetries, enterRucAndClick} = require('../utils/handle-puppetear');
+const { initializeBrowser, navigateWithRetries} = require('../utils/handle-puppetear');
 const {extractAllData, extractBasicData} = require('../utils/extract-data');
 const {handleRedirection} = require('../utils/timeout-promise');
 
@@ -10,15 +10,16 @@ async function getAllDataRuc(ruc) {
         await navigateWithRetries(page, url);
 
         // Ingresar el RUC y hacer clic en el botón
-        await page.type('#txtRuc', ruc);;
-
+        await page.type('#txtRuc', ruc);
+        await page.click('#btnAceptar');
+        await page.waitForNavigation({ waitUntil: 'networkidle2' });
         // Competir entre la redirección y el temporizador
-        try {
-            await handleRedirection(page, 1000);
-        } catch (error) {
-            await browser.close();
-            return { Error: 'Número de RUC inválido' };
-        }
+        //try {
+        //    await handleRedirection(page, 1000);
+        //} catch (error) {
+        //    await browser.close();
+        //    return { Error: 'Número de RUC inválido' };
+        //}
 
         // Si hay redirección, extraer la información necesaria
         const information = await page.evaluate(() => {

@@ -48,13 +48,15 @@ async function getBasicDataRuc(ruc) {
         await navigateWithRetries(page, url);
 
         await page.type('#txtRuc', ruc); // Ingresar el RUC
+        await page.click('#btnAceptar');
+        await page.waitForNavigation({ waitUntil: 'networkidle2' });
 
-        try {
-            await handleRedirection(page, 1000);
-        } catch (error) {
-            await browser.close();
-            return { Error: 'Número de RUC inválido' };
-        }
+        //try {
+        //    await handleRedirection(page, 1000);
+        //} catch (error) {
+        //    await browser.close();
+        //    return { Error: 'Número de RUC inválido' };
+        //}
 
         // Si hay redirección, extraer la información necesaria
         const information = await page.evaluate(() => {

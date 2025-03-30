@@ -24,14 +24,14 @@ async function getBasicDataRuc(dni) {
         await browser.close();
 
         if(information[3][0].includes('RUC NO REGISTRA')){
-            return { Mensaje: information[3][0]}
+            return { mensaje: information[3][0]}
         }
 
         return {
-            Dni: dni,
-            Nombres:information[0][1],
-            Ubicacion:information[2][0].slice(11),
-            Estado:(information[1][0]==='ACTIVO'? true: false),
+            dni: dni,
+            nombres:information[0][1],
+            ubicacion:information[2][0].slice(11),
+            estado:(information[1][0]==='ACTIVO'? true: false),
         }
     } catch (error) {
         console.error(error);

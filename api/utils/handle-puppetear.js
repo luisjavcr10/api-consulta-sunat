@@ -11,7 +11,9 @@ async function initializeBrowser() {
             '--disable-accelerated-2d-canvas',
             '--disable-gpu',
         ],
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || (await puppeteer.executablePath()) // Asegura que use la versión instalada
     });
+    
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
     return { browser, page };
@@ -33,7 +35,7 @@ async function navigateWithRetries(page, url, retries = 5, timeout = 20000) {
 
 async function enterRucAndClick(page, ruc) {
     await page.type('#txtRuc', ruc); // Ingresar el RUC
-     // Hacer clic en el botón
+    // Hacer clic en el botón
 }
 
-module.exports = { initializeBrowser, navigateWithRetries, enterRucAndClick};
+module.exports = { initializeBrowser, navigateWithRetries, enterRucAndClick };
